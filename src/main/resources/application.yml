@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: siyue-gateway
+  cloud:
+      gateway:
+        routes:
+        - id: sales-member-consumer
+          uri: lb://sales-member-consumer
+          predicates:
+          - Path=/api/sales-member/**
+          filters:
+          - SwaggerHeaderFilter
+          - StripPrefix=2
+      consul:
+         host: localhost
+         port: 8500
+         discovery:
+            prefer-ip-address: true
+server:
+  port: 9000
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 5000
+
